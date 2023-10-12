@@ -3,9 +3,12 @@ import sys
 import subprocess
 import bluetooth
 import pyautogui
-import multiprocessing
+import alive_progress
 from time import sleep
 from datetime import datetime
+import tabulate
+import colorama
+from colorama import Fore, Style
 
 try:
     import tabulate
@@ -272,7 +275,7 @@ def main_attack():
         select_target(macaddr)
         exploit_list()
     except KeyboardInterrupt:
-        sys.exit('Bye and remember,we are DEDSEC')
+        sys.exit('Bye and remember, we are DEDSEC')
     except NameError:
         os.system('clear')
         print('TARGET (NO) not found')
